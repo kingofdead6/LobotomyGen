@@ -28,7 +28,7 @@ def transform():
     data = request.get_json() or request.form
     user_message = data.get("message")
     voice = data.get("voice", "joe")
-    hf_api_key = data.get("hf_api_key")  # <-- NEW
+    hf_api_key = data.get("hf_api_key") 
 
     if not hf_api_key:
         return jsonify({"error": "No Hugging Face API key provided"}), 401
@@ -58,7 +58,7 @@ def transform():
 def voice_with_music():
     text = request.args.get("text", "")
     voice = request.args.get("voice", "joe")
-    hf_api_key = request.args.get("hf_api_key")  # <-- NEW
+    hf_api_key = request.args.get("hf_api_key") 
 
     if not hf_api_key:
         return jsonify({"error": "No Hugging Face API key provided"}), 401

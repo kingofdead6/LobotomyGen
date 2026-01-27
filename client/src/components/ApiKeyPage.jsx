@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-export default function ApiKeyPage({ navigate }) {
+export default function ApiKeyPage() {
+  const navigate = useNavigate();
   const [apiKey, setApiKey] = useState("");
 
   const handleSave = () => {

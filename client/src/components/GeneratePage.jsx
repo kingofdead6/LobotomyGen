@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import backgroundImg from "./assets/lk_background.png";
-import energyEffect from "./assets/energy_overlay.png";
+import backgroundImg from "../assets/lk_background.png";
+import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../api";
 
 const VOICES = [
   { label: "Joe (medium)", value: "joe" },
@@ -9,7 +10,8 @@ const VOICES = [
   { label: "lessac (medium)", value: "lessac" },
 ];
 
-export default function GeneratePage({ navigate }) {
+export default function GeneratePage() {
+  const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [audioUrl, setAudioUrl] = useState(null);
@@ -20,7 +22,7 @@ export default function GeneratePage({ navigate }) {
 
   useEffect(() => {
     if (!hfApiKey) {
-      navigate("/api-key"); // redirect if no key
+      navigate("/"); 
     }
   }, [hfApiKey, navigate]);
 
@@ -32,7 +34,7 @@ export default function GeneratePage({ navigate }) {
 
     try {
       
-      const res = await fetch("http://localhost:5000/transform", {
+      const res = await fetch(`${API_BASE_URL}/transform`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input, voice, hf_api_key: hfApiKey }),
@@ -41,7 +43,7 @@ export default function GeneratePage({ navigate }) {
       const data = await res.json();
       setOutput(data.transformed);
       if (data.voice_api_url) {
-        setAudioUrl(`http://localhost:5000${data.voice_api_url}&hf_api_key=${hfApiKey}`);
+        setAudioUrl(`${API_BASE_URL}${data.voice_api_url}&hf_api_key=${hfApiKey}`);
       }    } catch (e) {
       setOutput("DOMAIN EXPANSION FAILED 💀");
     } finally {
@@ -54,15 +56,10 @@ export default function GeneratePage({ navigate }) {
       className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden"
       style={{ background: `url(${backgroundImg}) center/cover no-repeat` }}
     >
-      <img
-        src={energyEffect}
-        alt="Energy Effect"
-        className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-30 pointer-events-none animate-pulse-slow"
-      />
-
+     
       <div className="relative z-10 w-full max-w-3xl bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl p-8 space-y-6 border border-red-600/50">
         <h1 className="text-4xl md:text-5xl font-extrabold text-center text-red-500 tracking-wide drop-shadow-lg animate-pulse">
-          🧠 Lobotomy Kaisen
+          Lobotomy Kaisen Gen
         </h1>
 
         <textarea
@@ -91,7 +88,7 @@ export default function GeneratePage({ navigate }) {
         </button>
 
         {output && (
-          <div className="bg-black/60 border border-red-700 rounded-2xl p-5 whitespace-pre-wrap text-lg shadow-lg shadow-red-500/40 animate-fade-in">
+          <div className="bg-black/60 border border-red-700 rounded-2xl text-red-400 p-5 whitespace-pre-wrap text-lg shadow-lg shadow-red-500/40 animate-fade-in">
             {output}
           </div>
         )}
@@ -106,13 +103,13 @@ export default function GeneratePage({ navigate }) {
               download={`lobotomy_voice_${voice}.mp3`}
               className="text-red-500 hover:text-red-400 hover:underline font-semibold transition-colors"
             >
-              ⬇️ Download Audio
+               Download Audio
             </a>
           </div>
         )}
 
         <p className="text-xs text-center text-red-400/60 mt-4">
-          Powered by HF Text + Piper TTS • CC0 Voices
+          Powered by JoGoat
         </p>
       </div>
     </div>
