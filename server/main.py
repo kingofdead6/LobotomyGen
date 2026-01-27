@@ -40,7 +40,7 @@ def transform():
         # Initialize agent per request with user's HF key
         jjk_agent = LobotomyAgent(hf_api_key, TEXT_MODEL)
         transformed_text = jjk_agent.transform_text(user_message)
-        safe_text = quote(transformed_text[:300])
+        safe_text = quote(transformed_text[:500])
 
         return jsonify(
             {

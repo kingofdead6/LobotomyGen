@@ -35,8 +35,8 @@ class LobotomyAgent:
             response = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=messages,
-                max_tokens=120,               
-                temperature=0.95,               
+                max_tokens=130,               
+                temperature=1.1,               
                 top_p=0.92,                    
                 presence_penalty=0.5,          
                 frequency_penalty=0.3,         

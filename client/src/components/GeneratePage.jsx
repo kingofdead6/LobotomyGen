@@ -28,12 +28,13 @@ export default function GeneratePage() {
 
   const handleTransform = async () => {
     if (!input.trim()) return;
+
     setLoading(true);
-    setOutput("");
+    setOutput("Generating Lobotomy Kaisen text…");
     setAudioUrl(null);
 
     try {
-      
+      // Step 1: Transform text
       const res = await fetch(`${API_BASE_URL}/transform`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -41,10 +42,21 @@ export default function GeneratePage() {
       });
 
       const data = await res.json();
-      setOutput(data.transformed);
+      setOutput(data.transformed || "Lobotomy failed...");
+
+      // Step 2: Generate voice + background music
       if (data.voice_api_url) {
-        setAudioUrl(`${API_BASE_URL}${data.voice_api_url}&hf_api_key=${hfApiKey}`);
-      }    } catch (e) {
+        setOutput(prev => prev + "\n\nGenerating voice and merging background music…");
+        const audioRes = await fetch(`${API_BASE_URL}${data.voice_api_url}&hf_api_key=${hfApiKey}`);
+        if (!audioRes.ok) throw new Error("Audio generation failed");
+        const audioBlob = await audioRes.blob();
+        const url = URL.createObjectURL(audioBlob);
+        setAudioUrl(url);
+        setOutput(prev => prev + "\n\nAudio generation complete!");
+      }
+
+    } catch (e) {
+      console.error(e);
       setOutput("DOMAIN EXPANSION FAILED 💀");
     } finally {
       setLoading(false);
@@ -56,7 +68,6 @@ export default function GeneratePage() {
       className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden"
       style={{ background: `url(${backgroundImg}) center/cover no-repeat` }}
     >
-     
       <div className="relative z-10 w-full max-w-3xl bg-black/40 backdrop-blur-xl rounded-3xl shadow-2xl p-8 space-y-6 border border-red-600/50">
         <h1 className="text-4xl md:text-5xl font-extrabold text-center text-red-500 tracking-wide drop-shadow-lg animate-pulse">
           Lobotomy Kaisen Gen
@@ -84,7 +95,7 @@ export default function GeneratePage() {
           disabled={loading}
           className="w-full py-4 rounded-2xl bg-red-600 hover:bg-red-700 transition-all font-bold text-lg shadow-red-500/70 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "DOMAIN EXPANDING…" : "Lobotomize"}
+          {loading ? "Generating Voice " : "Lobotomize"}
         </button>
 
         {output && (
@@ -103,7 +114,7 @@ export default function GeneratePage() {
               download={`lobotomy_voice_${voice}.mp3`}
               className="text-red-500 hover:text-red-400 hover:underline font-semibold transition-colors"
             >
-               Download Audio
+              Download Audio
             </a>
           </div>
         )}
