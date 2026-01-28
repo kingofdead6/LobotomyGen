@@ -7,15 +7,20 @@ wget -q https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_li
 tar -xzf piper_linux_x86_64.tar.gz
 rm piper_linux_x86_64.tar.gz
 
-# Force permissions
+mkdir -p piper_models
+
+# Download joe medium (add others if needed)
+wget -q https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/joe/medium/en_US-joe-medium.onnx -O piper_models/en_US-joe-medium.onnx
+wget -q https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/joe/medium/en_US-joe-medium.onnx.json -O piper_models/en_US-joe-medium.onnx.json
+
+# Force permissions again (recursive on whole dir)
 chmod -R 755 piper/
-chmod 644 piper/*.onnx piper/*.json 2>/dev/null || true   # models if you add them later
+chmod -R 644 piper_models/*
+chmod 755 piper/piper   # explicit on binary
 
-# Debug: show permissions
-ls -l piper/piper
-file piper/piper   # should say ELF 64-bit ...
-
-# Optional: test run (won't work without model yet, but checks binary)
-./piper/piper --help || true
+# Debug output - THESE WILL SHOW IN BUILD LOGS
+ls -la piper/ piper_models/
+file piper/piper
+./piper/piper --help || echo "Piper --help failed (expected without model, but binary should run)"
 
 echo "✅ Piper ready at $(pwd)/piper/piper"

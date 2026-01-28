@@ -1,3 +1,4 @@
+import os
 import shutil
 from huggingface_hub import InferenceClient
 import io
@@ -58,10 +59,12 @@ class LobotomyAgent:
         filename = f"/tmp/{uuid.uuid4()}.wav"
         model_path = self.voice_map.get(voice, self.voice_map["joe"])
 
-        print(f"[DEBUG] Piper path: {self.piper_path}")
-        print(f"[DEBUG] Model path: {model_path}")
-        print(f"[DEBUG] Output WAV path: {filename}")
-
+        print(f"[DEBUG] CWD: {os.getcwd()}")
+        print(f"[DEBUG] Piper path exists? {os.path.exists(self.piper_path)}")
+        print(f"[DEBUG] Piper is file? {os.path.isfile(self.piper_path)}")
+        print(f"[DEBUG] Piper permissions: {oct(os.stat(self.piper_path).st_mode)}")
+        print(f"[DEBUG] Can execute Piper? {os.access(self.piper_path, os.X_OK)}")  # This is key!
+        print(f"[DEBUG] Model exists? {os.path.exists(model_path)}")
         try:
             process = subprocess.run(
                 [
@@ -76,9 +79,9 @@ class LobotomyAgent:
                 check=False
             )
 
-            print("[DEBUG] Piper returncode:", process.returncode)
-            print("[DEBUG] Piper stdout:", process.stdout.decode("utf-8"))
-            print("[DEBUG] Piper stderr:", process.stderr.decode("utf-8"))
+            print(f"[DEBUG] Return code: {process.returncode}")
+            print(f"[DEBUG] Stdout: {process.stdout.decode('utf-8', errors='ignore')}")
+            print(f"[DEBUG] Stderr: {process.stderr.decode('utf-8', errors='ignore')}")  # Piper errors go here!
 
             if process.returncode != 0:
                 print("[ERROR] Piper failed to generate audio!")
