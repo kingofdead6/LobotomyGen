@@ -14,8 +14,7 @@ wget https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux
 tar -xzf piper_linux_x86_64.tar.gz
 
 # Make executable
-chmod +x piper
-
+chmod +x ./piper/piper
 
 
 # Verify install
