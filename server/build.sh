@@ -8,7 +8,7 @@ mkdir -p tools
 cd tools
 
 # Download Piper Linux binary (CPU)
-wget https://github.com/rhasspy/piper/releases/download/v1.2.0/piper_linux_x86_64.tar.gz
+wget https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux_x86_64.tar.gz
 
 # Extract
 tar -xzf piper_linux_x86_64.tar.gz
