@@ -43,7 +43,7 @@ export default function GeneratePage() {
 
       const data = await res.json();
       setOutput(data.transformed || "Lobotomy failed...");
-
+{/*  
       // Step 2: Generate voice + background music
       if (data.voice_api_url) {
         setOutput(prev => prev + "\n\nGenerating voice and merging background music…");
@@ -53,7 +53,7 @@ export default function GeneratePage() {
         const url = URL.createObjectURL(audioBlob);
         setAudioUrl(url);
         setOutput(prev => prev + "\n\nAudio generation complete!");
-      }
+      }*/}
 
     } catch (e) {
       console.error(e);
