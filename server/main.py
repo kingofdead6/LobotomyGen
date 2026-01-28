@@ -22,7 +22,7 @@ def merge_voice_with_music(
     voice_path: str,
     music_path: str,
     output_path: str,
-    music_volume: float = 90.0,
+    music_volume: float = 0.2,
 ):
     """
     Merge voice + background music using ffmpeg
@@ -71,7 +71,7 @@ def transform():
     try:
         jjk_agent = LobotomyAgent(hf_api_key, TEXT_MODEL)
         transformed_text = jjk_agent.transform_text(user_message)
-        safe_text = quote(transformed_text[:500])
+        safe_text = quote(transformed_text[:1000])
 
         return jsonify({
             "transformed": transformed_text,
@@ -120,7 +120,7 @@ def voice_with_music():
             voice_path=temp_voice_path,
             music_path=BG_MUSIC_PATH,
             output_path=temp_output_path,
-            music_volume=90.0,
+            music_volume=0.2,
         )
 
         return send_file(
