@@ -11,7 +11,6 @@ tar -xzf piper_linux_x86_64.tar.gz
 
 # Move binary to executable location
 chmod +x piper/piper
-mv piper/piper /usr/local/bin/piper
 
 # Verify
 piper --version || true
