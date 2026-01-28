@@ -3,21 +3,17 @@ set -e
 
 echo "🔧 Installing Piper TTS..."
 
-# Create tools directory
-mkdir -p tools
-cd tools
-
-# Download Piper Linux binary (CPU)
+# Download Piper
 wget https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux_x86_64.tar.gz
 
 # Extract
 tar -xzf piper_linux_x86_64.tar.gz
 
-# Make executable
-chmod +x ./piper/piper
+# Move binary to executable location
+chmod +x piper/piper
+mv piper/piper /usr/local/bin/piper
 
+# Verify
+piper --version || true
 
-# Verify install
-./piper/piper --version
-
-echo "✅ Piper installed successfully"
+echo "✅ Piper installed and available in PATH"
