@@ -13,14 +13,18 @@ mkdir -p piper_models
 wget -q https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/joe/medium/en_US-joe-medium.onnx -O piper_models/en_US-joe-medium.onnx
 wget -q https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/joe/medium/en_US-joe-medium.onnx.json -O piper_models/en_US-joe-medium.onnx.json
 
-# Force permissions again (recursive on whole dir)
+# Force permissions
 chmod -R 755 piper/
 chmod -R 644 piper_models/*
 chmod 755 piper/piper   # explicit on binary
 
-# Debug output - THESE WILL SHOW IN BUILD LOGS
+# Move to system bin (avoids relative path and permission issues)
+cp piper/piper /usr/local/bin/piper
+
+# Debug output
 ls -la piper/ piper_models/
 file piper/piper
-./piper/piper --help || echo "Piper --help failed (expected without model, but binary should run)"
+ls -l /usr/local/bin/piper
+/usr/local/bin/piper --help || echo "Piper --help failed (expected without model)"
 
-echo "✅ Piper ready at $(pwd)/piper/piper"
+echo "✅ Piper ready at /usr/local/bin/piper"

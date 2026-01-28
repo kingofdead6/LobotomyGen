@@ -10,7 +10,7 @@ class LobotomyAgent:
         self.client = InferenceClient(token=token)
         self.model_name = model_name
         self.system_prompt = self._load_prompt()
-        self.piper_path = "./piper/piper"
+        self.piper_path = "piper"
         # Piper config
         self.voice_map = {
                         "joe": "piper_models/en_US-joe-medium.onnx",
@@ -68,7 +68,6 @@ class LobotomyAgent:
         try:
             process = subprocess.run(
                 [
-                    "/lib64/ld-linux-x86-64.so.2",   # ← the interpreter (Render/Ubuntu-based has it)
                     self.piper_path,                 # "./piper/piper"
                     "--model", model_path,
                     "--output_file", filename
