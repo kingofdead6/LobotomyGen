@@ -65,14 +65,15 @@ class LobotomyAgent:
         try:
             process = subprocess.run(
                 [
-                    self.piper_path,
+                    "/lib64/ld-linux-x86-64.so.2",   # ← the interpreter (Render/Ubuntu-based has it)
+                    self.piper_path,                 # "./piper/piper"
                     "--model", model_path,
                     "--output_file", filename
                 ],
                 input=text.encode("utf-8"),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=False  # don't raise automatically, we'll handle manually
+                capture_output=True,                 # better than PIPE for debug
+                text=False,                          # keep bytes
+                check=False
             )
 
             print("[DEBUG] Piper returncode:", process.returncode)
