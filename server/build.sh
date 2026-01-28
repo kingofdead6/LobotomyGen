@@ -16,8 +16,7 @@ tar -xzf piper_linux_x86_64.tar.gz
 # Make executable
 chmod +x piper
 
-# Move to PATH
-mv piper /usr/local/bin/piper
+
 
 # Verify install
 piper --version
