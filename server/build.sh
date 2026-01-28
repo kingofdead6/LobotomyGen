@@ -19,6 +19,6 @@ chmod +x piper
 
 
 # Verify install
-piper --version
+./piper/piper --version
 
 echo "✅ Piper installed successfully"
